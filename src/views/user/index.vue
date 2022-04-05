@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.form.userId" placeholder="用户ID" style="width: 300px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.form._openid" placeholder="openid" style="width: 300px;margin-left:10px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.form.userId" placeholder="用户ID" style="width: 360px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="listQuery.form._openid" placeholder="openid" style="width: 360px;margin-left:10px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-select v-model="listQuery.form.subscribe_flg" placeholder="订阅标志" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key" />
       </el-select>
@@ -19,7 +19,6 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange"
     >
       <el-table-column label="ID" prop="id" align="center" width="180">
         <template slot-scope="{row}">
@@ -67,9 +66,9 @@
           <el-button type="primary" size="mini" @click="handleUpdate(row)">
             编辑
           </el-button>
-          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
+<!--          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
             发送
-          </el-button>
+          </el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -163,18 +162,17 @@ export default {
       tableKey: 0,
       list: null,
       total: 0,
-      listLoading: true,
+      listLoading: false,
       listQuery: {
         page: 1,
         limit: 10,
         form: {
           _openid: undefined,
-          userId: undefined
+          userId: undefined,
+          subscribe_flg: undefined
         }
       },
-      importanceOptions: [1, 2, 3],
       calendarTypeOptions,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
       statusOptions: ['published', 'draft', 'deleted'],
       showReviewer: false,
       temp: {
@@ -202,9 +200,6 @@ export default {
       downloadLoading: false
     }
   },
-  created() {
-    this.getList()
-  },
   methods: {
     getList() {
       this.listLoading = true
@@ -228,20 +223,6 @@ export default {
         type: 'success'
       })
       row.status = status
-    },
-    sortChange(data) {
-      const { prop, order } = data
-      if (prop === 'id') {
-        this.sortByID(order)
-      }
-    },
-    sortByID(order) {
-      if (order === 'ascending') {
-        this.listQuery.sort = '+id'
-      } else {
-        this.listQuery.sort = '-id'
-      }
-      this.handleFilter()
     },
     resetTemp() {
       this.temp = {

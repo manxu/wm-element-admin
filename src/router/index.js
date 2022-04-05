@@ -84,15 +84,24 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/subscribe',
+    path: '/user',
     component: Layout,
-    redirect: '/subscribe/index',
+    meta: {
+      title: '用户管理',
+      icon: 'peoples'
+    },
     children: [
       {
         path: 'index',
-        component: () => import('@/views/subscribe/index'),
-        name: '订阅消息',
-        meta: { title: '订阅消息', icon: 'peoples', affix: true }
+        component: () => import('@/views/user/index'),
+        name: '用户列表',
+        meta: { title: '用户列表', icon: 'peoples', affix: true }
+      },
+      {
+        path: 'log',
+        component: () => import('@/views/user/log'),
+        name: '登录日志',
+        meta: { title: '登录日志', icon: 'el-icon-s-help', affix: true }
       }
     ]
   },
